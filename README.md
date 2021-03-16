@@ -3,3 +3,5 @@ Long lost versions
 Upload used in all my update projects that needs sdl
 zips are the src code
 I will be updating this with a version of opengl that works on kos2.0 and this place opengl examples.
+
+website and version for kos1.3 http://chui.dcemu.co.uk/sdl.html
