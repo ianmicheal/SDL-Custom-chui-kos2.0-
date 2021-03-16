@@ -1,0 +1,38 @@
+TARGET	=	sdlevents
+
+
+CC =		gcc
+STRIP=		strip
+
+
+CFLAGS =	-Wall -Wno-switch -march=pentium -mcpu=pentium \
+		`sdl-config --cflags` -ffast-math -fno-common -ffreestanding -fno-builtin \
+		-fno-exceptions -fstrict-aliasing -O6 \
+		-ISFont -I. \
+
+
+LDFLAGS =	`sdl-config --libs` -lSDL_mixer -lSDL_image \
+
+
+.CFILES	=	sdlevents.c \
+		SFont/SFont.c
+
+
+
+all: $(TARGET)
+
+
+OBJS =		$(.CFILES:.c=.o)
+
+
+$(TARGET):	$(OBJS)
+	$(CC) $(CFLAGS) -o $@ $(OBJS) $(LDFLAGS)
+	$(STRIP) $(TARGET)
+
+
+run:		$(TARGET)
+	./$(TARGET)
+
+
+clean:
+	rm -f $(OBJS) $(TARGET)

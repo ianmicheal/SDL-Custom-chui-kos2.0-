@@ -1,0 +1,38 @@
+CC = arm-elf-gcc
+AR = arm-elf-ar
+AS = arm-elf-as
+LD = arm-elf-gcc
+STRIP = arm-elf-strip
+
+TARGET = $(GP32PATH)/arm-elf/lib/libSFont.a
+
+all: $(TARGET)
+
+DEFS= -DGP32 -DPACKAGE=\"SFont\" -DUSE_FIXED_POINT
+
+OPTFLAGS=-mtune=arm920 -march=armv4t -marm -mno-thumb-interwork -msoft-float -ffast-math -nostdlib -fno-common -ffreestanding -fno-builtin -fno-exceptions -mstructure-size-boundary=8 -O3 -fomit-frame-pointer -fstrict-aliasing -Wall
+
+CFLAGS= -DGP32_LIBC
+
+CFLAGS+= -I. -I../SDL-1.2.8/include/ $(OPTFLAGS) $(DEFS)
+
+SRCS = \
+	SFont.c
+
+
+
+
+OBJS = $(SRCS:.c=.o)
+
+TEST = \
+	showimage.c \
+
+
+clean:
+	rm -f $(OBJS)
+
+$(TARGET) : $(OBJS)
+	rm -f $(TARGET)
+	$(AR) rcs $(TARGET) $(OBJS)
+#	$(STRIP) $(TARGET)
+

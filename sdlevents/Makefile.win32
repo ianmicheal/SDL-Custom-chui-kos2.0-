@@ -1,0 +1,49 @@
+TARGET	=	sdlevents.exe
+
+
+CC =		gcc
+STRIP=		strip
+
+
+#SDL_CFLAGS =	-I/usr/local/include/SDL -Dmain=SDL_main -I/usr/include/mingw -DWIN32 -Uunix -mn o-cygwin
+
+#SDL_LDFLAGS =	-L/usr/local/lib -lmingw32 -lSDLmain -lSDL -mwindows -mno-cygwin -luser32 -lgdi3 2 -lwinmm
+
+
+SDL_CFLAGS =	`sdl-config --cflags` -DWIN32
+SDL_LDFLAGS =	`sdl-config --libs`
+
+
+CFLAGS =	-Wall -Wno-switch -march=pentium -mcpu=pentium ${SDL_CFLAGS} \
+		-ffast-math -fno-common -ffreestanding -fno-builtin -Isrc/ \
+		-fno-exceptions -fstrict-aliasing -O6 -I/usr/local/include \
+		-DDATA_PREFIX=\"example/\" -DFILE_SEPARATOR=\"/\" \
+		-ISFont -Isrc/ -I. -I/usr/include/mingw -I/usr/include \
+
+
+LDFLAGS =	-L/usr/lib -lSDL_image ${SDL_LDFLAGS} -lpng -lz -ljpeg \
+
+
+
+.CFILES	=	sdlevents.c \
+		SFont/SFont.c
+
+
+all: $(TARGET)
+
+
+
+OBJS =		$(.CFILES:.c=.o)
+
+
+$(TARGET):	$(OBJS)
+	$(CC) -L/usr/local/lib -o $(TARGET) -lmingw32 $(OBJS) -lSDL_static -mwindows -mno-cygwin -luser32 -lgdi32 -lwinmm
+	$(STRIP) $(TARGET)
+
+
+run:		$(TARGET)
+	./$(TARGET)
+
+
+clean:
+	rm -f $(OBJS) $(TARGET)
